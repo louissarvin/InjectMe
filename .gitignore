@@ -1,0 +1,61 @@
+# Dependencies
+node_modules/
+.bun/
+
+# Build artifacts
+contract/out/
+contract/cache/
+web/.output/
+web/.vinxi/
+web/.nitro/
+web/.tanstack/
+web/.wrangler/
+backend/prisma/generated/
+
+# Environment
+.env
+.env.production
+.env.local
+*.local
+
+# Claude / AI
+.claude/
+CLAUDE.md
+**/CLAUDE.md
+memory/
+**/memory/
+
+# Doc files (only README.md committed)
+0G_DETAIL.md
+ANALYSIS.md
+BACKEND_AUDIT.md
+HACKATHON.md
+IDEAS.md
+INJECTME.md
+PLAN.md
+WEB_AUDIT.md
+WINNING.md
+AUDIT.md
+DESIGN.md
+FRONTEND_STRUCTURE_GUIDE.md
+breakbaseWebTask.md
+web/.cta.json
+web/.mcp.json
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
+todos.json
+temp/
+count.txt
+dist/
+dist-ssr/
+backend/prisma/dev.db
+backend/bun.lockb
+build-history.sh
