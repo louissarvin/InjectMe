@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String   @id @default(cuid())
+  walletAddress String   @unique
+  nonce         String?
+  lastSignIn    DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Challenge {
+  id                    String   @id @default(cuid())
+  contractAddress       String   @unique
+  name                  String
+  description           String   @default("")
+  model                 String
+  systemPromptEncrypted String   @db.Text  // AES-256-GCM encrypted, format: v1:<iv>:<authTag>:<ciphertext>
+  systemPromptHash      String             // keccak256 of plaintext (for on-chain verification)
+  defender              String
+  visibility            String   @default("public")  // "public" or "unlisted"
+  difficulty            String   @default("intermediate") // beginner, intermediate, advanced, expert
+  challengeLabel        String   @default("secret_extraction") // secret_extraction, function_abuse, persona_break, logic_manipulation, indirect_injection, multi_turn_erosion, agent_escape
+  tokenAddress          String?            // ERC-20 token address (null = native 0G)
+  tokenSymbol           String?            // Token symbol for display (e.g. "W0G", "USDT")
+  rewardPerAttempt      String?            // Alignment: reward per attempt in wei (string for bigint)
+  linkedTokenId         Int?               // iNFT tokenId if challenge was created from a deployed agent
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  attempts              Attempt[]
+  alignmentDatasets     AlignmentDataset[]
+
+  @@index([defender])
+  @@index([contractAddress])
+  @@index([visibility])
+  @@index([difficulty])
+  @@index([challengeLabel])
+  @@index([linkedTokenId])
+}
+
+model Attempt {
+  id               String   @id @default(cuid())
+  challengeAddress String
+  attacker         String
+  message          String   @db.Text
+  response         String   @db.Text
+  judgment         String   // "SUCCESS" or "FAILED"
+  chatID           String   @default("")
+  teeVerified      Boolean  @default(false)
+  owaspCategory    String   @default("LLM01_PROMPT_INJECTION")
+  storageRoot      String   @default("")
+  archivalStatus   String   @default("PENDING") // PENDING, ARCHIVED, FAILED
+  createdAt        DateTime @default(now())
+
+  challenge Challenge? @relation(fields: [challengeAddress], references: [contractAddress])
+
+  @@index([challengeAddress])
+  @@index([attacker])
+  @@index([judgment])
+  @@index([chatID])
+  @@index([createdAt])
+}
+
+model AlignmentDataset {
+  id               String   @id @default(cuid())
+  challengeAddress String
+  storageRootHash  String
+  totalSamples     Int
+  breachRate       Float
+  model            String
+  datasetVersion   String   @default("injectme-alignment-v1")
+  publishedBy      String   // Defender wallet address
+  publishedAt      DateTime @default(now())
+
+  challenge Challenge? @relation(fields: [challengeAddress], references: [contractAddress])
+
+  @@index([challengeAddress])
+  @@index([publishedBy])
+  @@index([publishedAt])
+}
+
+model FineTuningJob {
+  id               String   @id @default(cuid())
+  defender         String   // wallet address of the defender who submitted the job
+  providerAddress  String   // 0G Compute provider address
+  baseModel        String   // base model ID (e.g. "Qwen2.5-0.5B-Instruct")
+  taskId           String?  // 0G Compute task ID (assigned after submission)
+  status           String   @default("PENDING") // PENDING, TRAINING, COMPLETED, FAILED, CANCELLED
+  fineTunedModel   String?  // resulting fine-tuned model identifier
+  trainingDataHash String?  // keccak256 of training data for integrity verification
+  datasetHash      String?  // 0G Storage root hash of the uploaded dataset
+  hyperparameters  String?  @db.Text // JSON stringified training config
+  epochs           Int      @default(3)
+  trainingPairs    Int      @default(0) // number of training examples submitted
+  errorMessage     String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([defender])
+  @@index([status])
+  @@index([taskId])
+  @@index([providerAddress])
+}
+
+model AgentPrompt {
+  id                    String   @id @default(cuid())
+  tokenId               Int      @unique
+  encryptedPrompt       String   @db.Text  // AES-256-GCM encrypted for the owner
+  ownerAddress          String
+  sourceTokenId         Int?               // original token if cloned
+  sourceChallengeAddress String?           // original challenge address
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([tokenId])
+  @@index([ownerAddress])
+}
+
+model ErrorLog {
+  id         String   @id @default(cuid())
+  errorCode  String
+  message    String
+  statusCode Int
+  stack      String?  @db.Text
+  context    String?  @db.Text
+  userId     String?
+  method     String?
+  path       String?
+  userAgent  String?  @db.Text
+  ip         String?
+  createdAt  DateTime @default(now())
+
+  @@index([errorCode])
+  @@index([createdAt])
+}
