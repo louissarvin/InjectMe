@@ -1,0 +1,131 @@
+[
+  {
+    "inputs": [{ "internalType": "address", "name": "attacker", "type": "address" }],
+    "name": "getAttackerReputation",
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct ReputationRegistry.AttackerReputation",
+        "components": [
+          { "name": "totalAttempts", "type": "uint256", "internalType": "uint256" },
+          { "name": "successfulBreaches", "type": "uint256", "internalType": "uint256" },
+          { "name": "challengesParticipated", "type": "uint256", "internalType": "uint256" },
+          { "name": "totalEarnings", "type": "uint256", "internalType": "uint256" },
+          { "name": "lastActiveAt", "type": "uint256", "internalType": "uint256" }
+        ]
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "attacker", "type": "address" }],
+    "name": "getAttackerScore",
+    "outputs": [{ "name": "score", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "defender", "type": "address" }],
+    "name": "getDefenderReputation",
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct ReputationRegistry.DefenderReputation",
+        "components": [
+          { "name": "totalChallengesCreated", "type": "uint256", "internalType": "uint256" },
+          { "name": "challengesSurvived", "type": "uint256", "internalType": "uint256" },
+          { "name": "challengesBreached", "type": "uint256", "internalType": "uint256" },
+          { "name": "totalPrizeDefended", "type": "uint256", "internalType": "uint256" },
+          { "name": "totalPrizeLost", "type": "uint256", "internalType": "uint256" },
+          { "name": "lastActiveAt", "type": "uint256", "internalType": "uint256" }
+        ]
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "defender", "type": "address" }],
+    "name": "getDefenderScore",
+    "outputs": [{ "name": "score", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "attacker", "type": "address" },
+      { "internalType": "address", "name": "challenge", "type": "address" }
+    ],
+    "name": "hasParticipated",
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "attacker", "type": "address" },
+      { "internalType": "address", "name": "challenge", "type": "address" }
+    ],
+    "name": "recordAttackerAttempt",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "attacker", "type": "address" },
+      { "internalType": "address", "name": "challenge", "type": "address" },
+      { "internalType": "uint256", "name": "prize", "type": "uint256" }
+    ],
+    "name": "recordAttackerVictory",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "defender", "type": "address" },
+      { "internalType": "address", "name": "challenge", "type": "address" },
+      { "internalType": "uint256", "name": "prizeDefended", "type": "uint256" }
+    ],
+    "name": "recordDefenderSurvived",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "defender", "type": "address" },
+      { "internalType": "address", "name": "challenge", "type": "address" },
+      { "internalType": "uint256", "name": "prizeLost", "type": "uint256" }
+    ],
+    "name": "recordDefenderBreached",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "defender", "type": "address" },
+      { "internalType": "address", "name": "challenge", "type": "address" },
+      { "internalType": "uint256", "name": "prize", "type": "uint256" }
+    ],
+    "name": "recordDefenderCreated",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address[]", "name": "attackers", "type": "address[]" },
+      { "internalType": "address[]", "name": "challengeAddrs", "type": "address[]" }
+    ],
+    "name": "batchRecordAttackerAttempts",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
