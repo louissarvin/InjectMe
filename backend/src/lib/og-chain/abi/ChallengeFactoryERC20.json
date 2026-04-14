@@ -1,0 +1,60 @@
+[
+  {
+    "inputs": [
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "address", "name": "tokenAddr", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint256", "name": "msgPrice", "type": "uint256" },
+      { "internalType": "uint256", "name": "duration", "type": "uint256" },
+      { "internalType": "bytes32", "name": "secretHash", "type": "bytes32" },
+      { "internalType": "string", "name": "model", "type": "string" }
+    ],
+    "name": "createTournamentERC20",
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "address", "name": "tokenAddr", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint256", "name": "duration", "type": "uint256" },
+      { "internalType": "bytes32", "name": "secretHash", "type": "bytes32" },
+      { "internalType": "string", "name": "model", "type": "string" }
+    ],
+    "name": "createBountyERC20",
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "address", "name": "tokenAddr", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint256", "name": "rewardPerAttempt", "type": "uint256" },
+      { "internalType": "uint256", "name": "duration", "type": "uint256" },
+      { "internalType": "bytes32", "name": "secretHash", "type": "bytes32" },
+      { "internalType": "string", "name": "model", "type": "string" }
+    ],
+    "name": "createAlignmentERC20",
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "WRAPPED_0G_ADDRESS",
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mainFactory",
+    "outputs": [{ "name": "", "type": "address", "internalType": "contract ChallengeFactory" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
