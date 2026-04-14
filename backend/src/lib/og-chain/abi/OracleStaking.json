@@ -1,0 +1,86 @@
+[
+  {
+    "inputs": [],
+    "name": "getActiveOracles",
+    "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "operator", "type": "address" }],
+    "name": "isActiveOracle",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "operator", "type": "address" }],
+    "name": "getOperatorInfo",
+    "outputs": [
+      { "internalType": "uint256", "name": "stakedAmount", "type": "uint256" },
+      { "internalType": "bool", "name": "isActive", "type": "bool" },
+      { "internalType": "uint256", "name": "judgmentsSubmitted", "type": "uint256" },
+      { "internalType": "uint256", "name": "judgmentsSlashed", "type": "uint256" },
+      { "internalType": "uint256", "name": "rewards", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "challenge", "type": "address" },
+      { "internalType": "address", "name": "winner", "type": "address" },
+      { "internalType": "string", "name": "chatID", "type": "string" }
+    ],
+    "name": "submitJudgment",
+    "outputs": [{ "internalType": "uint256", "name": "judgmentId", "type": "uint256" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "judgmentId", "type": "uint256" }],
+    "name": "confirmJudgment",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "judgmentId", "type": "uint256" }],
+    "name": "getJudgmentStatus",
+    "outputs": [
+      { "internalType": "uint256", "name": "confirmations", "type": "uint256" },
+      { "internalType": "uint256", "name": "required", "type": "uint256" },
+      { "internalType": "bool", "name": "executed", "type": "bool" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minStake",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "activeOracleCount",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "requiredConfirmations",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalStaked",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
