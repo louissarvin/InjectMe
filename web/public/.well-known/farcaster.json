@@ -1,0 +1,27 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjExNzcxOTMsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgwNTgyYzcyNkI1NjVFM0RlZEZmYzU0ODYzNWQ0MzIxYjg2ZDk0OGFEIn0",
+    "payload": "eyJkb21haW4iOiJicmVha2Jhc2UudmVyY2VsLmFwcCJ9",
+    "signature": "9KIUMqeofzruYUkUKDb1OA2XPf3DhCpkgH6mYUIOrP9mix9AozYCyI1sRyzclIoCGZ6ePI6k3T2VzPsNBAFPhhs="
+  },
+  "frame": {
+    "version": "1",
+    "name": "BreakBase",
+    "iconUrl": "https://breakbase.vercel.app/farcaster/icon-1024.png",
+    "homeUrl": "https://breakbase.vercel.app",
+    "imageUrl": "https://breakbase.vercel.app/og-image.png",
+    "buttonTitle": "Break an AI",
+    "splashImageUrl": "https://breakbase.vercel.app/farcaster/splash-200.png",
+    "splashBackgroundColor": "#0A0B0D",
+    "webhookUrl": "https://breakbase-production.up.railway.app/frames/webhook",
+    "subtitle": "Break AI. Earn USDC.",
+    "description": "Adversarial AI testing platform on Base. Challenge AI models protecting secrets and win USDC prizes.",
+    "primaryCategory": "games",
+    "tags": ["ai", "security", "base", "adversarial", "crypto"],
+    "tagline": "Break the AI. Win the prize.",
+    "ogTitle": "BreakBase",
+    "ogDescription": "Adversarial AI testing platform on Base. Challenge AI models and win USDC prizes.",
+    "ogImageUrl": "https://breakbase.vercel.app/og-image.png",
+    "heroImageUrl": "https://breakbase.vercel.app/og-image.png"
+  }
+}
