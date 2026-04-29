@@ -1,0 +1,405 @@
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+@import '@fontsource-variable/syne';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+
+@theme {
+  --color-bg-primary: #ffffff;
+  --color-bg-elevated: #f9fafb;
+  --color-bg-surface-1: #ffffff;
+  --color-bg-surface-2: #f3f4f6;
+  --color-bg-surface-3: #eef0f3;
+  --color-bg-section-alt: #f8f3ff;
+  --color-accent: #af69ee;
+  --color-accent-hover: #c28ff3;
+  --color-accent-pressed: #9554d4;
+  --color-accent-subtle: rgba(175, 105, 238, 0.08);
+  --color-accent-link: #af69ee;
+  --color-accent-link-hover: #c28ff3;
+  --color-text-primary: #0a0b0d;
+  --color-text-secondary: #4b5563;
+  --color-text-tertiary: #9ca3af;
+  --color-text-quaternary: #d1d5db;
+  --color-text-on-accent: #ffffff;
+  --color-border-primary: rgba(0, 0, 0, 0.08);
+  --color-border-secondary: rgba(0, 0, 0, 0.12);
+  --color-border-hover: rgba(0, 0, 0, 0.16);
+  --color-border-accent: rgba(175, 105, 238, 0.4);
+  --color-divider: #e5e7eb;
+  --color-success: #098551;
+  --color-success-subtle: rgba(9, 133, 81, 0.08);
+  --color-danger: #cf202f;
+  --color-danger-subtle: rgba(207, 32, 47, 0.08);
+  --color-warning: #ed702f;
+  --color-warning-subtle: rgba(237, 112, 47, 0.08);
+  --radius-card: 20px;
+  --radius-input: 8px;
+  --radius-pill: 980px;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-modal: 0 24px 80px rgba(0, 0, 0, 0.15);
+  --font-display: 'Syne Variable', sans-serif;
+  --ease-entrance: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-default: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply m-0 antialiased text-[#0A0B0D];
+    background: #fdfdff;
+    font-family:
+      'Geist Variable',
+      -apple-system,
+      BlinkMacSystemFont,
+      sans-serif;
+    font-feature-settings: 'cv01', 'cv02', 'cv03', 'cv04';
+    letter-spacing: -0.011em;
+  }
+
+  code {
+    font-family:
+      'Geist Mono Variable', 'SF Mono', 'Fira Code', ui-monospace, monospace;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #fdfdff;
+  }
+
+  .dark ::-webkit-scrollbar-track {
+    background: #0a0b0d;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
+
+  ::selection {
+    background: rgba(175, 105, 238, 0.15);
+    color: #0a0b0d;
+  }
+}
+
+@layer utilities {
+  .section-label {
+    font-family: 'Geist Variable', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #af69ee;
+    text-decoration: underline;
+    text-decoration-color: #af69ee;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .card {
+    background: #fdfdff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.08),
+      0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  .card-hover {
+    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .card-hover:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+  }
+
+  .card-accent {
+    background: #f8f3ff;
+    border: 1px solid rgba(175, 105, 238, 0.15);
+    border-radius: 20px;
+  }
+
+  .card-subtle {
+    background: #f9fafb;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+  }
+
+  .focus-ring {
+    @apply outline-none;
+    box-shadow: 0 0 0 3px rgba(175, 105, 238, 0.12);
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 400ms cubic-bezier(0.165, 0.84, 0.44, 1) both;
+  }
+}
+
+@layer base {
+  /* Remove browser default blue focus outline from all inputs/textareas */
+  textarea:focus,
+  input:focus,
+  select:focus,
+  textarea:focus-visible,
+  input:focus-visible,
+  select:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.4;
+      transform: scale(0.85);
+    }
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes float-gentle {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes textWipeReveal {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+
+  @keyframes dissolve {
+    0% {
+      opacity: 1;
+      filter: blur(0px);
+    }
+    50% {
+      opacity: 0.3;
+      filter: blur(2px);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(0px);
+    }
+  }
+
+  @keyframes skeleton-sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(300%);
+    }
+  }
+
+  @keyframes orbit {
+    from {
+      transform: rotate(0deg) translateX(var(--orbit-radius, 200px))
+        rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg) translateX(var(--orbit-radius, 200px))
+        rotate(-360deg);
+    }
+  }
+
+  @keyframes accent-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(var(--accent-rgb, 175, 105, 238), 0.4);
+    }
+    50% {
+      box-shadow: 0 0 20px 4px rgba(var(--accent-rgb, 175, 105, 238), 0.15);
+    }
+  }
+}
+
+@layer utilities {
+  .animate-pulse-dot {
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 24s linear infinite;
+  }
+
+  .animate-float {
+    animation: float-gentle 6s ease-in-out infinite;
+  }
+
+  .animate-marquee {
+    animation: marquee 20s linear infinite;
+  }
+
+  .animate-text-wipe {
+    animation: textWipeReveal 1.2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  }
+
+  .animate-shimmer {
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .divider-dotted {
+    border-bottom: 2px dotted rgba(0, 0, 0, 0.15);
+    margin: 0;
+  }
+
+  .animate-dissolve {
+    animation: dissolve 2s ease-in-out infinite;
+  }
+
+  .animate-orbit {
+    animation: orbit var(--orbit-duration, 20s) linear infinite;
+  }
+
+  .animate-accent-pulse {
+    animation: accent-pulse 3s ease-in-out infinite;
+  }
+
+  .skeleton-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skeleton-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    animation: skeleton-sweep 1.5s ease-in-out infinite;
+  }
+
+  .link-underline {
+    position: relative;
+  }
+
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: currentColor;
+    transition: width 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .link-underline:hover::after {
+    width: 100%;
+  }
+
+  .tooltip-trigger {
+    position: relative;
+    cursor: help;
+  }
+
+  .tooltip-trigger::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-4px);
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #0a0b0d;
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.2s,
+      transform 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .tooltip-trigger:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-8px);
+  }
+}
