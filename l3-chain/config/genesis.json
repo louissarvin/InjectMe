@@ -1,0 +1,143 @@
+{
+  "config": {
+    "chainId": 16601,
+    "homesteadBlock": 0,
+    "eip150Block": 0,
+    "eip155Block": 0,
+    "eip158Block": 0,
+    "byzantiumBlock": 0,
+    "constantinopleBlock": 0,
+    "petersburgBlock": 0,
+    "istanbulBlock": 0,
+    "muirGlacierBlock": 0,
+    "berlinBlock": 0,
+    "londonBlock": 0,
+    "arrowGlacierBlock": 0,
+    "grayGlacierBlock": 0,
+    "mergeNetsplitBlock": 0,
+    "shanghaiTime": 0,
+    "cancunTime": 0,
+    "bedrockBlock": 0,
+    "regolithTime": 0,
+    "canyonTime": 0,
+    "deltaTime": 0,
+    "ecotoneTime": 0,
+    "fjordTime": 0,
+    "optimism": {
+      "eip1559Elasticity": 6,
+      "eip1559Denominator": 50,
+      "eip1559DenominatorCanyon": 250
+    }
+  },
+  "nonce": "0x0",
+  "timestamp": "0x0",
+  "extraData": "0x",
+  "gasLimit": "0x1C9C380",
+  "difficulty": "0x0",
+  "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "coinbase": "0x0000000000000000000000000000000000000000",
+  "alloc": {
+    "0x4200000000000000000000000000000000000006": {
+      "comment": "WETH predeploy (standard OP Stack system contract)",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x4200000000000000000000000000000000000007": {
+      "comment": "L2CrossDomainMessenger predeploy",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x4200000000000000000000000000000000000010": {
+      "comment": "L2StandardBridge predeploy",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x4200000000000000000000000000000000000011": {
+      "comment": "SequencerFeeVault predeploy",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x4200000000000000000000000000000000000012": {
+      "comment": "OptimismMintableERC20Factory predeploy",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x4200000000000000000000000000000000000015": {
+      "comment": "L1Block predeploy (L1 block attributes on L2)",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x4200000000000000000000000000000000000016": {
+      "comment": "L2ToL1MessagePasser predeploy",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x4200000000000000000000000000000000000018": {
+      "comment": "BaseFeeVault predeploy",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x4200000000000000000000000000000000000019": {
+      "comment": "L1FeeVault predeploy",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x420000000000000000000000000000000000001a": {
+      "comment": "SchemaRegistry predeploy",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x420000000000000000000000000000000000001b": {
+      "comment": "EAS predeploy",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0xDeaDDEaDDeAdDeAdDEAdDEaddeAddEAdDEAd0001": {
+      "comment": "L1Block proxy (derives L1 info)",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x1000000000000000000000000000000000000001": {
+      "comment": "InjectMe: ChallengeFactory (deterministic L3 address)",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x1000000000000000000000000000000000000002": {
+      "comment": "InjectMe: AgentNFT (deterministic L3 address)",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x1000000000000000000000000000000000000003": {
+      "comment": "InjectMe: ReputationRegistry (deterministic L3 address)",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    },
+    "0x1000000000000000000000000000000000000004": {
+      "comment": "InjectMe: TeeOracle (deterministic L3 address)",
+      "balance": "0x0",
+      "storage": {},
+      "code": "0x"
+    }
+  },
+  "number": "0x0",
+  "gasUsed": "0x0",
+  "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "baseFeePerGas": "0x3B9ACA00",
+  "excessBlobGas": "0x0",
+  "blobGasUsed": "0x0"
+}
