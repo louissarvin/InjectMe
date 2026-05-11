@@ -1,0 +1,88 @@
+{
+  "_comment": "0G DA configuration for InjectMe L3 rollup",
+
+  "da_server": {
+    "_comment": "HTTP sidecar that bridges OP Stack to 0G DA network",
+    "listen_address": "0.0.0.0",
+    "listen_port": 3100,
+    "zg_server": "da-client:51001"
+  },
+
+  "da_client": {
+    "_comment": "0G DA combined client (disperser + retriever)",
+
+    "chain": {
+      "rpc": "https://evmrpc-testnet.0g.ai",
+      "receipt_wait_rounds": 180,
+      "receipt_wait_interval": "1s",
+      "gas_limit": 2000000
+    },
+
+    "disperser": {
+      "grpc_port": 51001,
+      "_comment_port": "gRPC endpoint that the DA server connects to via --zg.server"
+    },
+
+    "storage": {
+      "use_memory_db": false,
+      "kv_db_path": "/data/da-client/db",
+      "time_to_expire": 2592000,
+      "_comment_ttl": "Blob TTL in seconds. 2592000 = 30 days."
+    },
+
+    "batcher": {
+      "finalizer_interval": "20s",
+      "confirmer_num": 3,
+      "batch_size_limit": "500MiB",
+      "encoding_interval": "3s",
+      "encoding_request_queue_size": 1,
+      "pull_interval": "10s",
+      "signing_interval": "3s",
+      "signed_pull_interval": "20s",
+      "_comment": "Controls how the DA client batches and encodes blobs for submission."
+    },
+
+    "contracts": {
+      "da_entrance": "0xE75A073dA5bb7b0eC622170Fd268f35E675a957B",
+      "da_signers": "0x0000000000000000000000000000000000001000",
+      "_comment_entrance": "DAEntrance on 0G Galileo testnet. Handles blob submission fees and routing.",
+      "_comment_signers": "DASigners precompile. Fixed address on all 0G chains."
+    }
+  },
+
+  "da_encoder": {
+    "_comment": "Rust-based encoder that performs erasure coding on blobs",
+    "grpc_address": "0.0.0.0:34000",
+    "encoding_timeout": "300s",
+    "signing_timeout": "60s",
+    "_comment_params": "Encoder parameters must be downloaded via dev-support/download_params.sh"
+  },
+
+  "network": {
+    "_comment": "0G DA network parameters (Galileo testnet)",
+    "max_blob_size": "34078720",
+    "_comment_blob": "Max blob size in bytes. 32.5 MiB = 34078720 bytes.",
+    "encoded_slices": 3072,
+    "tokens_per_vote": 30,
+    "max_votes_per_signer": 1024,
+    "max_quorums": 10,
+    "epoch_blocks": 5760,
+    "_comment_epoch": "Number of L1 blocks per DA epoch. ~5760 blocks at 12s = ~19.2 hours."
+  },
+
+  "da_node": {
+    "_comment": "Reference config for running your own DA node (optional, for self-hosting)",
+    "grpc_listen_address": "0.0.0.0:34000",
+    "eth_rpc_endpoint": "https://evmrpc-testnet.0g.ai",
+    "da_entrance_address": "0x857C0A28A8634614BB2C96039Cf4a20AFF709Aa9",
+    "start_block_number": 940000,
+    "enable_das": true,
+    "min_hardware": {
+      "memory_gb": 16,
+      "cpu_cores": 8,
+      "disk_gb": 1000,
+      "disk_type": "NVMe SSD",
+      "bandwidth_mbps": 100
+    }
+  }
+}
