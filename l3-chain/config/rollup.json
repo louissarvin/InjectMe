@@ -1,0 +1,68 @@
+{
+  "_comment": "InjectMe L3 rollup configuration for OP Stack with 0G DA",
+
+  "genesis": {
+    "l1": {
+      "_comment": "L1 block at which the L3 rollup was deployed. Set by deploy script.",
+      "hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "number": 0
+    },
+    "l2": {
+      "_comment": "L3 genesis block hash. Set by deploy script after genesis init.",
+      "hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "number": 0
+    },
+    "l2_time": 0,
+    "system_config": {
+      "_comment": "System config read from L1 SystemConfigProxy at genesis.",
+      "batcherAddr": "0x0000000000000000000000000000000000000000",
+      "overhead": "0x00000000000000000000000000000000000000000000000000000000000000bc",
+      "scalar": "0x00000000000000000000000000000000000000000000000000000000000a6fe0",
+      "gasLimit": 30000000
+    }
+  },
+
+  "block_time": 2,
+
+  "max_sequencer_drift": 600,
+
+  "seq_window_size": 3600,
+
+  "channel_timeout": 300,
+
+  "l1_chain_id": 16602,
+
+  "l2_chain_id": 16601,
+
+  "regolith_time": 0,
+
+  "canyon_time": 0,
+
+  "delta_time": 0,
+
+  "ecotone_time": 0,
+
+  "fjord_time": 0,
+
+  "batch_inbox_address": "0xff00000000000000000000000000000000016601",
+
+  "deposit_contract_address": "0x0000000000000000000000000000000000000000",
+
+  "l1_system_config_address": "0x0000000000000000000000000000000000000000",
+
+  "protocol_versions_address": "0x0000000000000000000000000000000000000000",
+
+  "alt_da": {
+    "_comment_type": "GenericCommitment means the DA server generates commitments, not the chain.",
+    "da_commitment_type": "GenericCommitment",
+
+    "_comment_challenge": "Challenge contract is zero-address when not using on-chain DA challenges.",
+    "da_challenge_contract_address": "0x0000000000000000000000000000000000000000",
+
+    "_comment_windows": "Challenge and resolve windows in L1 blocks. 160 blocks at ~12s = ~32 minutes.",
+    "da_challenge_window": 160,
+
+    "_comment_resolve": "Time allowed to resolve a DA challenge, also in L1 blocks.",
+    "da_resolve_window": 160
+  }
+}
