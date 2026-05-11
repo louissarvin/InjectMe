@@ -1,0 +1,9 @@
+# Secrets
+.env
+config/jwt-secret.txt
+
+# Persistent data
+data/
+
+# OS artifacts
+.DS_Store
