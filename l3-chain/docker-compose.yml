@@ -1,0 +1,326 @@
+# =============================================================================
+# InjectMe L3 App-Chain: OP Stack with 0G DA
+# =============================================================================
+#
+# Architecture:
+#   L1 (0G Chain Galileo) --> op-proposer (state roots)
+#                         --> op-batcher (DA commitments via da-server)
+#   da-server --> da-client --> da-encoder --> 0G DA Network
+#   op-geth <--> op-node (Engine API over JWT)
+#
+# Usage:
+#   1. Copy env.example to .env and fill in values
+#   2. Run: ./scripts/deploy-l3.sh        (first time)
+#   3. Or:  docker compose up -d           (subsequent starts)
+#   4. Logs: docker compose logs -f <service>
+#
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # DA Encoder: Erasure-codes blobs for the 0G DA network
+  # ---------------------------------------------------------------------------
+  da-encoder:
+    image: ghcr.io/0glabs/0g-da-encoder:latest
+    container_name: injectme-da-encoder
+    restart: unless-stopped
+    ports:
+      - "34000:34000"
+    volumes:
+      - da-encoder-params:/app/params
+    command: >
+      --config /app/config.toml
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 34000 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 4G
+    networks:
+      - l3-network
+
+  # ---------------------------------------------------------------------------
+  # DA Client: Disperser + retriever that talks to the 0G DA network
+  # ---------------------------------------------------------------------------
+  da-client:
+    image: ghcr.io/0glabs/0g-da-client:latest
+    container_name: injectme-da-client
+    restart: unless-stopped
+    depends_on:
+      da-encoder:
+        condition: service_healthy
+    ports:
+      - "${DA_CLIENT_GRPC_PORT:-51001}:51001"
+    volumes:
+      - da-client-data:/data/da-client
+    command: >
+      --chain.rpc ${L1_RPC_URL}
+      --chain.private-key ${DA_SIGNER_PRIVATE_KEY}
+      --chain.receipt-wait-rounds 180
+      --chain.receipt-wait-interval 1s
+      --chain.gas-limit 2000000
+      --combined-server.use-memory-db false
+      --combined-server.storage.kv-db-path /data/da-client/db
+      --combined-server.storage.time-to-expire ${DA_BLOB_EXPIRY:-2592000}
+      --disperser-server.grpc-port 51001
+      --encoder-socket da-encoder:34000
+      --encoding-timeout 300s
+      --signing-timeout 60s
+      --batcher.da-entrance-contract ${DA_ENTRANCE_CONTRACT}
+      --batcher.da-signers-contract ${DA_SIGNERS_CONTRACT}
+      --batcher.finalizer-interval 20s
+      --batcher.confirmer-num 3
+      --batcher.batch-size-limit 500
+      --batcher.encoding-interval 3s
+      --batcher.encoding-request-queue-size 1
+      --batcher.pull-interval 10s
+      --batcher.signing-interval 3s
+      --batcher.signed-pull-interval 20s
+      --combined-server.log.level-file debug
+      --combined-server.log.level-std info
+      --combined-server.log.path /data/da-client/logs/combined.log
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 51001 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 2G
+    networks:
+      - l3-network
+
+  # ---------------------------------------------------------------------------
+  # DA Server: HTTP sidecar bridging OP Stack Alt-DA to 0G DA client
+  # ---------------------------------------------------------------------------
+  da-server:
+    image: ghcr.io/0glabs/0g-da-op-plasma:latest
+    container_name: injectme-da-server
+    restart: unless-stopped
+    depends_on:
+      da-client:
+        condition: service_healthy
+    ports:
+      - "3100:3100"
+    command: >
+      da-server
+      --addr 0.0.0.0
+      --port 3100
+      --zg.server ${DA_CLIENT_ENDPOINT:-da-client:51001}
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:3100/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - l3-network
+
+  # ---------------------------------------------------------------------------
+  # op-geth: L3 execution engine (EVM)
+  # ---------------------------------------------------------------------------
+  op-geth:
+    image: us-docker.pkg.dev/oplabs-tools-artifacts/images/op-geth:v1.101408.0
+    container_name: injectme-op-geth
+    restart: unless-stopped
+    ports:
+      - "${OP_GETH_HTTP_PORT:-8545}:8545"
+      - "${OP_GETH_WS_PORT:-8546}:8546"
+      - "${OP_GETH_AUTH_PORT:-8551}:8551"
+      - "${OP_GETH_P2P_PORT:-30303}:30303"
+      - "${OP_GETH_METRICS_PORT:-6060}:6060"
+    volumes:
+      - op-geth-data:/data/op-geth
+      - ./config/genesis.json:/config/genesis.json:ro
+      - ./config/jwt-secret.txt:/config/jwt-secret.txt:ro
+    entrypoint: geth
+    command: >
+      --datadir /data/op-geth
+      --http
+      --http.addr 0.0.0.0
+      --http.port 8545
+      --http.corsdomain "*"
+      --http.vhosts "*"
+      --http.api web3,debug,eth,txpool,net,engine
+      --ws
+      --ws.addr 0.0.0.0
+      --ws.port 8546
+      --ws.origins "*"
+      --ws.api debug,eth,txpool,net,engine
+      --authrpc.addr 0.0.0.0
+      --authrpc.port 8551
+      --authrpc.vhosts "*"
+      --authrpc.jwtsecret /config/jwt-secret.txt
+      --networkid ${L3_CHAIN_ID:-16601}
+      --syncmode full
+      --gcmode archive
+      --state.scheme hash
+      --nodiscover
+      --maxpeers 0
+      --rollup.disabletxpoolgossip
+      --rollup.sequencerhttp http://localhost:8545
+      --metrics
+      --metrics.addr 0.0.0.0
+      --metrics.port 6060
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:8545 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 4G
+    networks:
+      - l3-network
+
+  # ---------------------------------------------------------------------------
+  # op-node: L3 consensus/derivation (reads L1, drives op-geth via Engine API)
+  # ---------------------------------------------------------------------------
+  op-node:
+    image: us-docker.pkg.dev/oplabs-tools-artifacts/images/op-node:v1.9.1
+    container_name: injectme-op-node
+    restart: unless-stopped
+    depends_on:
+      op-geth:
+        condition: service_healthy
+      da-server:
+        condition: service_healthy
+    ports:
+      - "${OP_NODE_RPC_PORT:-9545}:9545"
+      - "${OP_NODE_P2P_PORT:-9003}:9003"
+      - "${OP_NODE_METRICS_PORT:-7300}:7300"
+    volumes:
+      - op-node-data:/data/op-node
+      - ./config/rollup.json:/config/rollup.json:ro
+      - ./config/jwt-secret.txt:/config/jwt-secret.txt:ro
+    command: >
+      op-node
+      --l1 ${L1_RPC_URL}
+      --l1.rpckind ${L1_RPC_KIND:-basic}
+      --l2 http://op-geth:8551
+      --l2.jwt-secret /config/jwt-secret.txt
+      --rollup.config /config/rollup.json
+      --rpc.addr 0.0.0.0
+      --rpc.port 9545
+      --p2p.listen.tcp 9003
+      --p2p.disable
+      --sequencer.enabled
+      --sequencer.l1-confs 5
+      --verifier.l1-confs 4
+      --l1.beacon.ignore true
+      --altda.enabled true
+      --altda.da-server ${DA_SERVER_URL:-http://da-server:3100}
+      --altda.da-service true
+      --metrics.enabled
+      --metrics.addr 0.0.0.0
+      --metrics.port 7300
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:9545/healthz || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - l3-network
+
+  # ---------------------------------------------------------------------------
+  # op-batcher: Batches L3 txs, posts DA commitments to 0G DA (not Ethereum)
+  # ---------------------------------------------------------------------------
+  op-batcher:
+    image: us-docker.pkg.dev/oplabs-tools-artifacts/images/op-batcher:v1.9.1
+    container_name: injectme-op-batcher
+    restart: unless-stopped
+    depends_on:
+      op-node:
+        condition: service_healthy
+      da-server:
+        condition: service_healthy
+    ports:
+      - "${OP_BATCHER_METRICS_PORT:-7301}:7301"
+    command: >
+      op-batcher
+      --l1-eth-rpc ${L1_RPC_URL}
+      --l2-eth-rpc http://op-geth:8545
+      --rollup-rpc http://op-node:9545
+      --private-key ${GS_BATCHER_PRIVATE_KEY}
+      --max-channel-duration 1
+      --altda.enabled true
+      --altda.da-service true
+      --altda.da-server ${DA_SERVER_URL:-http://da-server:3100}
+      --metrics.enabled
+      --metrics.addr 0.0.0.0
+      --metrics.port 7301
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+    networks:
+      - l3-network
+
+  # ---------------------------------------------------------------------------
+  # op-proposer: Posts L3 state roots to L1 (0G Chain)
+  # ---------------------------------------------------------------------------
+  op-proposer:
+    image: us-docker.pkg.dev/oplabs-tools-artifacts/images/op-proposer:v1.9.1
+    container_name: injectme-op-proposer
+    restart: unless-stopped
+    depends_on:
+      op-node:
+        condition: service_healthy
+    ports:
+      - "${OP_PROPOSER_METRICS_PORT:-7302}:7302"
+    command: >
+      op-proposer
+      --l1-eth-rpc ${L1_RPC_URL}
+      --rollup-rpc http://op-node:9545
+      --private-key ${GS_PROPOSER_PRIVATE_KEY}
+      --l2oo-address ${L2OO_ADDRESS}
+      --poll-interval 12s
+      --metrics.enabled
+      --metrics.addr 0.0.0.0
+      --metrics.port 7302
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+    networks:
+      - l3-network
+
+# =============================================================================
+# Volumes: Persistent storage for chain data and DA state
+# =============================================================================
+volumes:
+  op-geth-data:
+    driver: local
+  op-node-data:
+    driver: local
+  da-client-data:
+    driver: local
+  da-encoder-params:
+    driver: local
+
+# =============================================================================
+# Network: Internal bridge for all L3 components
+# =============================================================================
+networks:
+  l3-network:
+    driver: bridge
+    name: injectme-l3
