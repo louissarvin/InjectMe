@@ -896,12 +896,12 @@ function stepLabel(step: string): string {
   }
 }
 
-// Waits for a transaction receipt using viem against the 0G testnet RPC.
+// Waits for a transaction receipt using viem against the 0G Mainnet RPC.
 async function pollReceipt(hash: `0x${string}`) {
   const { createPublicClient, http } = await import('viem')
 
   const client = createPublicClient({
-    transport: http('https://evmrpc-testnet.0g.ai'),
+    transport: http('https://evmrpc.0g.ai'),
   })
 
   return client.waitForTransactionReceipt({ hash })
