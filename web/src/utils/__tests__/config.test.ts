@@ -6,8 +6,8 @@ describe('config', () => {
     expect(config.appName).toBe('InjectMe')
   })
 
-  it('has 0G Galileo testnet chain ID', () => {
-    expect(config.chainId).toBe(16602)
+  it('has 0G mainnet chain ID', () => {
+    expect(config.chainId).toBe(16661)
   })
 
   it('has all required contract addresses as hex strings', () => {
