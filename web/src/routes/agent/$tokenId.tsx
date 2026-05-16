@@ -115,7 +115,7 @@ function FeedbackBanner({ state }: { state: FeedbackState }) {
           <>
             {' '}
             <a
-              href={`https://chainscan-galileo.0g.ai/tx/${txHash}`}
+              href={`https://chainscan.0g.ai/tx/${txHash}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 font-mono underline underline-offset-2 hover:text-[#AF69EE] transition-colors"
@@ -865,7 +865,7 @@ function AgentDetailPage() {
                 <div className="flex flex-col gap-2">
                   {attestations.map((hash) => {
                     const explorerUrl = isHexHash(hash)
-                      ? `https://chainscan-galileo.0g.ai/tx/${hash}`
+                      ? `https://chainscan.0g.ai/tx/${hash}`
                       : undefined
                     return (
                       <div
@@ -1011,7 +1011,7 @@ function AgentDetailPage() {
             {/* Explorer link */}
             {!isClone && (
               <a
-                href={`https://chainscan-galileo.0g.ai/address/${agent.challengeAddress}`}
+                href={`https://chainscan.0g.ai/address/${agent.challengeAddress}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 text-[#6B7280] hover:text-[#AF69EE] text-[13px] py-2 transition-colors"
