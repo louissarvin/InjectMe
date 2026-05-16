@@ -349,7 +349,7 @@ function JudgmentBadge({
   const isSuccess = judgment === 'SUCCESS'
   const safeLink =
     chatID && isHexId(chatID)
-      ? `https://chainscan-galileo.0g.ai/tx/${chatID}`
+      ? `https://chainscan.0g.ai/tx/${chatID}`
       : undefined
 
   return (
@@ -1000,7 +1000,7 @@ function ChallengePage() {
                 {challenge.totalAttempts !== 1 ? 's' : ''}
               </span>
               <a
-                href={`https://chainscan-galileo.0g.ai/address/${challenge.address}`}
+                href={`https://chainscan.0g.ai/address/${challenge.address}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ml-auto flex items-center gap-1 text-[12px] text-[#6B7280] hover:text-[#AF69EE] transition-colors"
@@ -1261,7 +1261,7 @@ function ChallengePage() {
                   System Prompt Hash
                 </p>
                 <a
-                  href={`https://chainscan-galileo.0g.ai/address/${challenge.address}`}
+                  href={`https://chainscan.0g.ai/address/${challenge.address}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex items-start gap-1.5"
@@ -1279,7 +1279,7 @@ function ChallengePage() {
 
             {/* Explorer link */}
             <a
-              href={`https://chainscan-galileo.0g.ai/address/${challenge.address}`}
+              href={`https://chainscan.0g.ai/address/${challenge.address}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 text-[#6B7280] hover:text-[#AF69EE] text-[13px] py-2 transition-colors"
