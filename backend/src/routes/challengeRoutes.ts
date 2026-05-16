@@ -903,30 +903,30 @@ export const challengeRoutes: FastifyPluginCallback = (app: FastifyInstance, _op
 
   app.get('/leaderboard', async (_request: FastifyRequest, reply: FastifyReply) => {
     try {
-      // Top attackers by wins
-      const topAttackers = await prismaQuery.attempt.groupBy({
-        by: ['attacker'],
-        where: { judgment: 'SUCCESS' },
-        _count: { id: true },
-        orderBy: { _count: { id: 'desc' } },
-        take: 20,
-      });
-
-      // All attacker attempts for win rate
+      // All attacker attempts (base for every tab)
       const allAttempts = await prismaQuery.attempt.groupBy({
         by: ['attacker'],
         _count: { id: true },
+        orderBy: { _count: { id: 'desc' } },
+        take: 50,
       });
 
-      const attemptMap = new Map(
-        allAttempts.map((a: { attacker: string; _count: { id: number } }) => [a.attacker, a._count.id])
+      // Wins per attacker
+      const winRows = await prismaQuery.attempt.groupBy({
+        by: ['attacker'],
+        where: { judgment: 'SUCCESS' },
+        _count: { id: true },
+      });
+
+      const winMap = new Map(
+        winRows.map((w: { attacker: string; _count: { id: number } }) => [w.attacker, w._count.id])
       );
 
-      const leaderboard = topAttackers.map((a: { attacker: string; _count: { id: number } }) => ({
+      const leaderboard = allAttempts.map((a: { attacker: string; _count: { id: number } }) => ({
         address: a.attacker,
-        wins: a._count.id,
-        totalAttempts: attemptMap.get(a.attacker) || 0,
-        winRate: ((a._count.id / (Number(attemptMap.get(a.attacker)) || 1)) * 100).toFixed(1),
+        wins: winMap.get(a.attacker) || 0,
+        totalAttempts: a._count.id,
+        winRate: (((winMap.get(a.attacker) || 0) / a._count.id) * 100).toFixed(1),
       }));
 
       return reply.code(200).send({
