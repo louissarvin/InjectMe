@@ -109,7 +109,7 @@ const ZG_FEATURES = [
     label: '0G Chain',
     description: 'Purpose-built for decentralized AI',
     details:
-      'Built on 0G Galileo testnet, a modular AI chain with native support for compute, storage, and data availability. Sub-second finality with low transaction costs.',
+      'Built on 0G Mainnet (Aristotle), a modular AI chain with native support for compute, storage, and data availability. Sub-second finality with low transaction costs.',
   },
 ]
 
