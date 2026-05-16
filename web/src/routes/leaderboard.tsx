@@ -47,7 +47,7 @@ const TAB_CONFIG: Array<{
   },
 ]
 
-const EXPLORER_BASE = 'https://chainscan-galileo.0g.ai/address'
+const EXPLORER_BASE = 'https://chainscan.0g.ai/address'
 
 function truncateAddress(address: string): string {
   return `${address.slice(0, 6)}...${address.slice(-4)}`

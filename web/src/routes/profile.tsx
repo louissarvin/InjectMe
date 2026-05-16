@@ -237,7 +237,7 @@ function ProfilePage() {
 
           <div className="mt-4 pt-4 border-t border-black/[0.06] dark:border-white/[0.06] flex items-center justify-between gap-4">
             <a
-              href={`https://chainscan-galileo.0g.ai/address/${addr}`}
+              href={`https://chainscan.0g.ai/address/${addr}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-[#9CA3AF] hover:text-[#AF69EE] text-[13px] transition-colors"
