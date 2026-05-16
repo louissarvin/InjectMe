@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-// Farcaster is not applicable on 0G Galileo testnet.
+// Farcaster is not applicable on 0G Mainnet (Aristotle).
 // This passthrough provider preserves existing import contracts.
 
 interface FarcasterContextValue {
