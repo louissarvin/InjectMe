@@ -6,6 +6,7 @@ interface ContractAddresses {
   oracleStaking: `0x${string}`
   challengeFactoryERC20: `0x${string}`
   wrapped0GBase: `0x${string}`
+  backendOracle: `0x${string}`
 }
 
 interface AppConfig {
@@ -51,6 +52,7 @@ export const config: AppConfig = {
     oracleStaking: '0x064378fdC30bF7f9A9B79D6f70e889384545b7A9',
     challengeFactoryERC20: '0x3a725eA9c69094550F6Df4C897400B9379d0aD83',
     wrapped0GBase: '0x0000000000000000000000000000000000001002',
+    backendOracle: '0x66D3108798E113a8Ecb677e886ec9a9E3f5cA0cD',
   },
 
   links: {

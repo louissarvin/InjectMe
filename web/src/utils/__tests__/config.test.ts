@@ -20,6 +20,7 @@ describe('config', () => {
       contracts.oracleStaking,
       contracts.challengeFactoryERC20,
       contracts.wrapped0GBase,
+      contracts.backendOracle,
     ]
     for (const addr of addresses) {
       expect(addr).toMatch(/^0x[0-9a-fA-F]{40}$/)

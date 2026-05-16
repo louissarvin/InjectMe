@@ -20,7 +20,7 @@ import {
   Spinner,
   Tooltip,
 } from '@heroui/react'
-import { useAccount } from 'wagmi'
+import { useAccount, useWriteContract } from 'wagmi'
 import { useAuth } from '@/hooks/useAuth'
 import {
   useAgent,
@@ -35,6 +35,8 @@ import {
 } from '@/lib/api/hooks'
 import { cnm } from '@/utils/style'
 import GlassCard from '@/components/GlassCard'
+import { agentNFTAbi } from '@/lib/contracts/abis'
+import { CONTRACT_ADDRESSES } from '@/lib/contracts/addresses'
 
 export const Route = createFileRoute('/agent/$tokenId')({
   component: AgentDetailPage,
@@ -171,14 +173,28 @@ function TransferCard({
   const [to, setTo] = useState('')
   const [showConfirm, setShowConfirm] = useState(false)
   const [feedback, setFeedback] = useState<FeedbackState>({ type: 'idle' })
-  const { mutateAsync, isPending } = useTransferAgent(tokenId)
+  const [step, setStep] = useState<'idle' | 'approving' | 'transferring'>('idle')
+  const { mutateAsync } = useTransferAgent(tokenId)
+  const { writeContractAsync } = useWriteContract()
 
+  const isPending = step !== 'idle'
   const isValid = isValidAddress(to)
 
   async function handleTransfer() {
     setShowConfirm(false)
     setFeedback({ type: 'idle' })
     try {
+      // Step 1: Approve the backend oracle to transfer this token
+      setStep('approving')
+      await writeContractAsync({
+        address: CONTRACT_ADDRESSES.agentNFT,
+        abi: agentNFTAbi,
+        functionName: 'approve',
+        args: [CONTRACT_ADDRESSES.backendOracle, BigInt(tokenId)],
+      })
+
+      // Step 2: Call backend to execute re-encryption + transfer
+      setStep('transferring')
       await ensureFreshCredentials()
       const res = await mutateAsync({ to })
       setFeedback({
@@ -192,6 +208,8 @@ function TransferCard({
         type: 'error',
         msg: err instanceof Error ? err.message : 'Transfer failed.',
       })
+    } finally {
+      setStep('idle')
     }
   }
 
@@ -231,7 +249,11 @@ function TransferCard({
           isLoading={isPending}
           className="bg-[#AF69EE] hover:bg-[#C28FF3] text-white text-[14px] font-semibold rounded-xl h-10 transition-colors"
         >
-          {isPending ? <Spinner size="sm" color="white" /> : 'Transfer Agent'}
+          {step === 'approving'
+            ? 'Approving...'
+            : step === 'transferring'
+              ? 'Transferring...'
+              : 'Transfer Agent'}
         </Button>
       </GlassCard>
 
@@ -294,13 +316,27 @@ function CloneCard({
 }) {
   const [to, setTo] = useState('')
   const [feedback, setFeedback] = useState<FeedbackState>({ type: 'idle' })
-  const { mutateAsync, isPending } = useCloneAgent(tokenId)
+  const [step, setStep] = useState<'idle' | 'approving' | 'cloning'>('idle')
+  const { mutateAsync } = useCloneAgent(tokenId)
+  const { writeContractAsync } = useWriteContract()
 
+  const isPending = step !== 'idle'
   const isValid = isValidAddress(to)
 
   async function handleClone() {
     setFeedback({ type: 'idle' })
     try {
+      // Step 1: Approve the backend oracle for this token
+      setStep('approving')
+      await writeContractAsync({
+        address: CONTRACT_ADDRESSES.agentNFT,
+        abi: agentNFTAbi,
+        functionName: 'approve',
+        args: [CONTRACT_ADDRESSES.backendOracle, BigInt(tokenId)],
+      })
+
+      // Step 2: Call backend to execute re-encryption + clone
+      setStep('cloning')
       await ensureFreshCredentials()
       const res = await mutateAsync({ to })
       setFeedback({
@@ -314,6 +350,8 @@ function CloneCard({
         type: 'error',
         msg: err instanceof Error ? err.message : 'Clone failed.',
       })
+    } finally {
+      setStep('idle')
     }
   }
 
@@ -352,7 +390,11 @@ function CloneCard({
         isLoading={isPending}
         className="bg-[#AF69EE] hover:bg-[#C28FF3] text-white text-[14px] font-semibold rounded-xl h-10 transition-colors"
       >
-        {isPending ? <Spinner size="sm" color="white" /> : 'Clone Agent'}
+        {step === 'approving'
+          ? 'Approving...'
+          : step === 'cloning'
+            ? 'Cloning...'
+            : 'Clone Agent'}
       </Button>
     </GlassCard>
   )
