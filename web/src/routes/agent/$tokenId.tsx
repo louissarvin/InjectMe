@@ -35,8 +35,20 @@ import {
 } from '@/lib/api/hooks'
 import { cnm } from '@/utils/style'
 import GlassCard from '@/components/GlassCard'
-import { agentNFTAbi } from '@/lib/contracts/abis'
 import { CONTRACT_ADDRESSES } from '@/lib/contracts/addresses'
+
+const erc721ApproveAbi = [
+  {
+    type: 'function',
+    name: 'approve',
+    inputs: [
+      { name: 'to', type: 'address' },
+      { name: 'tokenId', type: 'uint256' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+] as const
 
 export const Route = createFileRoute('/agent/$tokenId')({
   component: AgentDetailPage,
@@ -188,7 +200,7 @@ function TransferCard({
       setStep('approving')
       await writeContractAsync({
         address: CONTRACT_ADDRESSES.agentNFT,
-        abi: agentNFTAbi,
+        abi: erc721ApproveAbi,
         functionName: 'approve',
         args: [CONTRACT_ADDRESSES.backendOracle, BigInt(tokenId)],
       })
@@ -330,7 +342,7 @@ function CloneCard({
       setStep('approving')
       await writeContractAsync({
         address: CONTRACT_ADDRESSES.agentNFT,
-        abi: agentNFTAbi,
+        abi: erc721ApproveAbi,
         functionName: 'approve',
         args: [CONTRACT_ADDRESSES.backendOracle, BigInt(tokenId)],
       })
