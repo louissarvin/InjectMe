@@ -47,9 +47,17 @@ $ anvil
 
 ### Deploy
 
+Deploy to 0G Mainnet (Aristotle):
+
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ forge script script/Deploy.s.sol:Deploy --rpc-url 0g_mainnet --broadcast --verify
 ```
+
+Network details:
+- Chain ID: 16661
+- RPC: https://evmrpc.0g.ai
+- Explorer: https://chainscan.0g.ai
+- EVM version: cancun
 
 ### Cast
 
