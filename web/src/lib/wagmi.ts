@@ -1,6 +1,6 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit'
 import { cookieStorage, createConfig, createStorage, http } from 'wagmi'
-import { zeroGGalileoTestnet } from 'wagmi/chains'
+import { zeroGMainnet } from 'viem/chains'
 import { injected } from 'wagmi/connectors'
 import { env } from '@/env'
 
@@ -22,19 +22,19 @@ export const wagmiConfig = projectId
   ? getDefaultConfig({
       appName: 'InjectMe',
       projectId,
-      chains: [zeroGGalileoTestnet],
+      chains: [zeroGMainnet],
       ssr: true,
       storage: persistentStorage,
       transports: {
-        [zeroGGalileoTestnet.id]: http('https://evmrpc-testnet.0g.ai'),
+        [zeroGMainnet.id]: http('https://evmrpc.0g.ai'),
       },
     })
   : createConfig({
-      chains: [zeroGGalileoTestnet],
+      chains: [zeroGMainnet],
       connectors: [injected()],
       storage: persistentStorage,
       ssr: true,
       transports: {
-        [zeroGGalileoTestnet.id]: http('https://evmrpc-testnet.0g.ai'),
+        [zeroGMainnet.id]: http('https://evmrpc.0g.ai'),
       },
     })
