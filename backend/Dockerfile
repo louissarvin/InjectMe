@@ -7,9 +7,10 @@ WORKDIR /app
 RUN apk add --no-cache openssl
 
 # Copy dependency manifests first for layer caching
-COPY package.json bun.lockb ./
+COPY package.json ./
+COPY bun.lockb* ./
 
-# Deterministic install (fails if lockfile is out of sync)
+# Install dependencies
 RUN bun install --frozen-lockfile
 
 # Copy Prisma schema and config before generate
