@@ -39,17 +39,17 @@ interface AppConfig {
 export const config: AppConfig = {
   appName: 'InjectMe',
   appDescription: 'AI adversarial testing platform on 0G Chain',
-  chainId: 16602, // 0G Galileo Testnet
+  chainId: 16661, // 0G Mainnet (Aristotle)
 
   apiUrl: import.meta.env.VITE_API_URL ?? 'http://localhost:3700',
 
   contracts: {
-    challengeFactory: '0xb2497B0D68fDf4AEb638D0c2ecFE15bbFA5D8560',
-    agentNFT: '0xa778b7705c15573d900428a5F34EE26FCFE0AB67',
-    teeOracle: '0x1e73A6b71308b41d683FD77bBA43BD3C0bF20ee8',
-    reputationRegistry: '0x97b7B855fA6988a0F7F66cf27C28Bb8B09286fB4',
-    oracleStaking: '0x99D77A1A2a2e8599d67aaaaFcbce7776264B4c17',
-    challengeFactoryERC20: '0x7F24560254958F4A7C9F39eDd32b56b05B6b6D74',
+    challengeFactory: '0x8B16b1AF11B8b927290c6C69a24ed12002030eF0',
+    agentNFT: '0x535e47b2D4409Cab1AB1325BC6fC4C9F9ef106C1',
+    teeOracle: '0xD1F2FA31E221EBeF13Fac259123aCd7B79C23018',
+    reputationRegistry: '0x1c6838de56aDe21a8eEcd125b273F8cBF17f881f',
+    oracleStaking: '0x064378fdC30bF7f9A9B79D6f70e889384545b7A9',
+    challengeFactoryERC20: '0x3a725eA9c69094550F6Df4C897400B9379d0aD83',
     wrapped0GBase: '0x0000000000000000000000000000000000001002',
   },
 
