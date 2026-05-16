@@ -31,8 +31,8 @@ export const ERROR_LOG_MAX_RECORDS: number = 10000;
 export const ERROR_LOG_CLEANUP_INTERVAL: string = '0 * * * *'; // Every hour
 
 // 0G Chain
-export const OG_RPC_URL: string = process.env.OG_RPC_URL || 'https://evmrpc-testnet.0g.ai';
-export const OG_CHAIN_ID: number = Number(process.env.OG_CHAIN_ID) || 16602;
+export const OG_RPC_URL: string = process.env.OG_RPC_URL || 'https://evmrpc.0g.ai';
+export const OG_CHAIN_ID: number = Number(process.env.OG_CHAIN_ID) || 16661;
 export const ORACLE_PRIVATE_KEY: string = process.env.ORACLE_PRIVATE_KEY || '';
 export const FACTORY_ADDRESS: string = process.env.FACTORY_ADDRESS || '';
 export const AGENT_NFT_ADDRESS: string = process.env.AGENT_NFT_ADDRESS || '';
@@ -42,8 +42,8 @@ export const OG_COMPUTE_PROVIDER: string = process.env.OG_COMPUTE_PROVIDER || ''
 export const EVALUATOR_PRIVATE_KEY: string = process.env.EVALUATOR_PRIVATE_KEY || ORACLE_PRIVATE_KEY;
 
 // 0G Storage
-export const OG_STORAGE_INDEXER: string = process.env.OG_STORAGE_INDEXER || 'https://indexer-storage-testnet-turbo.0g.ai';
-export const OG_FLOW_CONTRACT: string = process.env.OG_FLOW_CONTRACT || '0x22E03a6A89B950F1c82ec5e74F8eCa321a105296';
+export const OG_STORAGE_INDEXER: string = process.env.OG_STORAGE_INDEXER || 'https://indexer-storage-turbo.0g.ai';
+export const OG_FLOW_CONTRACT: string = process.env.OG_FLOW_CONTRACT || '0x62D4144dB0F0a6fBBaeb6296c785C71B3D57C526';
 export const OG_KV_STREAM_ID: string = process.env.OG_KV_STREAM_ID || '';
 export const STORAGE_PRIVATE_KEY: string = process.env.STORAGE_PRIVATE_KEY || ORACLE_PRIVATE_KEY;
 
